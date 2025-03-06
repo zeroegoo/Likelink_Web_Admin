@@ -74,11 +74,13 @@ export default {
   methods: {
     handleLogin() {
       if (this.userId === '1234' && this.password === '1234') {
-        const payload = {
-              "user_type_id": "3",
-              "username": this.userId,
-              "password": this.password
-            }
+        // Set login state in localStorage
+        localStorage.setItem('isLoggedIn', 'true');
+        
+        // You can also store user information like this (if needed):
+        // localStorage.setItem('userId', this.userId); 
+
+        // Redirect to the next page after successful login
         this.$router.push('/EmergencyAlert');
       } else {
         this.loginError = 'Invalid User ID or Password. Please try again.';

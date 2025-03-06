@@ -10,13 +10,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue';
+import { defineComponent, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
   setup() {
     const router = useRouter();
-
+    
     const currentRouteName = computed(() => router.currentRoute.value.name);
 
     onMounted(() => {
