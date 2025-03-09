@@ -21,8 +21,8 @@ export default defineComponent({
 
     onMounted(() => {
       const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
-
       if (!isLoggedIn && currentRouteName.value !== 'Login') {
+        // router.push('/EmergencyAlert');
         router.push('/Login');
       }
     });

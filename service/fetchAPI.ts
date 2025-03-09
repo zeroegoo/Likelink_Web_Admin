@@ -17,27 +17,28 @@ const get = async (apiMethod: string): Promise<any> => {
   const post = async (apiMethod: string, payload: Record<string, unknown>): Promise<unknown> => {
     try {
       const response = await fetch(apiMethod, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
         method: "POST",
+        headers: {
+          'Content-Type': '*',
+        },
         body: JSON.stringify(payload),
       });
   
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status} - ${response.statusText}`);
+        const errorText = await response.text();
+        console.error(`Response error: ${errorText}`);
+        throw new Error(`HTTP error! status: ${response.status}, ${response.statusText}, Details: ${errorText}`);
       }
   
-      const data = await response.json();
-      return data;
+      const json = await response.json();
+      return json;
     } catch (error) {
+      console.error("Error in fetch:", error);
       if (error instanceof Error) {
-        console.error(`Error posting data: ${error.message}`);
+        throw new Error(`Failed to post data: ${error.message}`);
       } else {
-        console.error("An unknown error occurred:", error);
+        throw new Error("An unknown error occurred during data posting.");
       }
-      throw error;
     }
   };
   

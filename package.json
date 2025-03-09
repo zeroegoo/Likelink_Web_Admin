@@ -16,5 +16,6 @@
     "vue": "latest",
     "vue-router": "latest",
     "vuex": "^4.0.2"
-  }
+  },
+  "proxy": "http://rifile.trueddns.com:48195"
 }

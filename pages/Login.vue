@@ -59,7 +59,8 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
+import fetchAPI from '../../service/fetchAPI.ts';
 export default {
   name: "Login",
     components: {
@@ -72,16 +73,23 @@ export default {
     };
   },
   methods: {
-    handleLogin() {
+    async handleLogin() {
       if (this.userId === '1234' && this.password === '1234') {
-        // Set login state in localStorage
-        localStorage.setItem('isLoggedIn', 'true');
-        
-        // You can also store user information like this (if needed):
-        // localStorage.setItem('userId', this.userId); 
-
-        // Redirect to the next page after successful login
-        this.$router.push('/EmergencyAlert');
+        // try {
+        //   const payload = {
+        //       "user_type_id": "3",
+        //       "username": this.userId,
+        //       "password": this.password
+        //     }
+        // const result = await fetchAPI.post('http://rifile.trueddns.com:48195/api/User/Login', payload);
+        // if(result) {
+        //   dataDetail.value = result
+          this.$router.push('/EmergencyAlert');
+        // }
+        // console.log(result)
+        // } catch (error) {
+        //   console.error('Error fetching data:', error);
+        // }
       } else {
         this.loginError = 'Invalid User ID or Password. Please try again.';
       }
