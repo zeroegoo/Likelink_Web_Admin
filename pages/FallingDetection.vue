@@ -67,81 +67,98 @@
 
         <!-- Right Section: Personal Information -->
         <div class="flex-1 p-10 border-l-2 border-[oklch(0.552_0.016_285.938)] overflow-auto">
-            <h2 class="text-2xl sm:text-3xl font-bold">Personal Information</h2>
-            <div class="grid grid-cols-1 mt-4 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-white">
-                <!-- Name -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">Name</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">Pipat Laorakwit</div>
-                </div>
+            <div class="h-full flex flex-col justify-between">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold">Personal Information</h2>
+                    <div class="grid grid-cols-1 mt-4 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-white">
+                        <!-- Name -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">Name</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">Pipat Laorakwit</div>
+                        </div>
 
-                <!-- Age -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">AGE</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">17</div>
-                </div>
+                        <!-- Age -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">AGE</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">17</div>
+                        </div>
 
-                <!-- Blood -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">Blood</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">B</div>
-                </div>
+                        <!-- Blood -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">Blood</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">B</div>
+                        </div>
 
-                <!-- Weight -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">WEIGHT</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">56</div>
-                </div>
+                        <!-- Weight -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">WEIGHT</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">56</div>
+                        </div>
 
-                <!-- Height -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">HEIGHT</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">172</div>
-                </div>
+                        <!-- Height -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">HEIGHT</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">172</div>
+                        </div>
 
-                <!-- Address -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">ADDRESS</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
-                </div>
+                        <!-- Address -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">ADDRESS</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                        </div>
 
-                <!-- EMS Phone Number -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">EMS Phone Number</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">0889954477</div>
-                </div>
+                        <!-- EMS Phone Number -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">EMS Phone Number</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">0889954477</div>
+                        </div>
 
-                <!-- Right of Treatment -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">RIGHT OF TREATMENT</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
-                </div>
-            </div>
+                        <!-- Right of Treatment -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">RIGHT OF TREATMENT</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                        </div>
+                    </div>
 
-            <h2 class="text-2xl font-bold mt-5 mb-4">Medical History</h2>
-            <div class="grid grid-cols-1 mt-4 sm:grid-cols-2 lg:grid-cols-2 gap-4 text-white">
-                <!-- Past Medical Condination -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">Past Medical Condination</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
-                </div>
+                    <h2 class="text-2xl font-bold mt-5 mb-4">Medical History</h2>
+                    <div class="grid grid-cols-1 mt-4 sm:grid-cols-2 lg:grid-cols-2 gap-4 text-white">
+                        <!-- Past Medical Condination -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">Past Medical Condination</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                        </div>
 
-                <!-- Medications -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">Medications</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
-                </div>
+                        <!-- Medications -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">Medications</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                        </div>
 
-                <!-- Blood -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">Allergies</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
-                </div>
+                        <!-- Blood -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">Allergies</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                        </div>
 
-                <!-- Blood -->
-                <div class="flex flex-col text-black">
-                    <div class="font-semibold text-black text-base">Surgical History</div>
-                    <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                        <!-- Blood -->
+                        <div class="flex flex-col text-black">
+                            <div class="font-semibold text-black text-base">Surgical History</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex w-full justify-end space-x-4">
+                    <div>
+                        <button
+                            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none">
+                            Accept
+                        </button>
+                    </div>
+                    <div>
+                        <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none">
+                            Decline
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
