@@ -18,8 +18,10 @@ const get = async (apiMethod: string): Promise<any> => {
     try {
       const response = await fetch(apiMethod, {
         method: "POST",
+        credentials: 'include', // Match with AllowCredentials() on server
         headers: {
-          'Content-Type': '*',
+          'Content-Type': 'application/json', // Change from '*' to 'application/json'
+          'Accept': 'application/json'
         },
         body: JSON.stringify(payload),
       });
