@@ -74,25 +74,22 @@ export default {
   },
   methods: {
     async handleLogin() {
-      if (this.userId === '1234' && this.password === '1234') {
-        // try {
-        //   const payload = {
-        //       "user_type_id": "3",
-        //       "username": this.userId,
-        //       "password": this.password
-        //     }
-        // const result = await fetchAPI.post('http://rifile.trueddns.com:48195/api/User/Login', payload);
-        // if(result) {
-        //   dataDetail.value = result
+        try {
+          const payload = {
+              "user_type_id": "3",
+              "username": this.userId,
+              "password": this.password
+            }
+        const result = await fetchAPI.post('http://rifile.trueddns.com:48195/api/User/Login', payload);
+        if(result) {
+          // dataDetail.value = result
+          console.log(result)
           this.$router.push('/EmergencyAlert');
-        // }
-        // console.log(result)
-        // } catch (error) {
-        //   console.error('Error fetching data:', error);
-        // }
-      } else {
-        this.loginError = 'Invalid User ID or Password. Please try again.';
-      }
+        }
+        console.log(result)
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
     },
   },
 };

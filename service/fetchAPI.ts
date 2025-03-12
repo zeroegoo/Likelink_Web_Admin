@@ -16,13 +16,16 @@ const get = async (apiMethod: string): Promise<any> => {
 
   const post = async (apiMethod: string, payload: Record<string, unknown>): Promise<unknown> => {
     try {
+      const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
       const response = await fetch(apiMethod, {
         method: "POST",
-        headers: {
-          'Content-Type': '*',
-        },
+        headers: myHeaders,
         body: JSON.stringify(payload),
+        redirect: "follow"
       });
+
+      console.log(payload)
   
       if (!response.ok) {
         const errorText = await response.text();

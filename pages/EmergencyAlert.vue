@@ -94,12 +94,10 @@ export default {
     };
 
     const handleClickFallingDetection = (item) => {
-      const user_id = item.user_id
-      router.push('/FallingDetection').then(() => {
-        // window.history.replaceState({ user_id: user_id }, '', '/FallingDetection');
-      });
+      const user_id = item.user_id;
+      
+      router.push({ path: "/FallingDetection", state: { user: { id: user_id } } });
     };
-
 
     onMounted(() => {
       getData();

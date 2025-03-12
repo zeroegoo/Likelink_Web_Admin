@@ -66,51 +66,52 @@
         </div>
 
         <!-- Right Section: Personal Information -->
-        <div class="flex-1 p-10 border-l-2 border-[oklch(0.552_0.016_285.938)] overflow-auto">
-            <div class="h-full flex flex-col justify-between">
+        <div v-if="dataDetail && dataDetail.length > 0"
+            class="flex-1 p-10 border-l-2 border-[oklch(0.552_0.016_285.938)] overflow-auto">
+            <div v-for="item in dataDetail" :key="item.task_id" class="h-full flex flex-col justify-between">
                 <div>
                     <h2 class="text-2xl sm:text-3xl font-bold">Personal Information</h2>
                     <div class="grid grid-cols-1 mt-4 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-white">
                         <!-- Name -->
                         <div class="flex flex-col text-black">
                             <div class="font-semibold text-black text-base">Name</div>
-                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">Pipat Laorakwit</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">{{ item.fullname }}</div>
                         </div>
 
                         <!-- Age -->
                         <div class="flex flex-col text-black">
                             <div class="font-semibold text-black text-base">AGE</div>
-                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">17</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">{{ item.height }}</div>
                         </div>
 
                         <!-- Blood -->
                         <div class="flex flex-col text-black">
                             <div class="font-semibold text-black text-base">Blood</div>
-                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">B</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">{{ item.blood }}</div>
                         </div>
 
                         <!-- Weight -->
                         <div class="flex flex-col text-black">
                             <div class="font-semibold text-black text-base">WEIGHT</div>
-                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">56</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">{{ item.weight }}</div>
                         </div>
 
                         <!-- Height -->
                         <div class="flex flex-col text-black">
                             <div class="font-semibold text-black text-base">HEIGHT</div>
-                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">172</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">{{ item.height }}</div>
                         </div>
 
                         <!-- Address -->
                         <div class="flex flex-col text-black">
                             <div class="font-semibold text-black text-base">ADDRESS</div>
-                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">{{ item.address }}</div>
                         </div>
 
                         <!-- EMS Phone Number -->
                         <div class="flex flex-col text-black">
                             <div class="font-semibold text-black text-base">EMS Phone Number</div>
-                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">0889954477</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">{{ item.phone }}</div>
                         </div>
 
                         <!-- Right of Treatment -->
@@ -137,7 +138,8 @@
                         <!-- Blood -->
                         <div class="flex flex-col text-black">
                             <div class="font-semibold text-black text-base">Allergies</div>
-                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">-</div>
+                            <div class="bg-[oklch(0.956_0.045_203.388)] p-2 rounded-xl mt-2">{{ item.allergic_medication
+                                }}</div>
                         </div>
 
                         <!-- Blood -->
@@ -179,35 +181,54 @@ export default {
     },
     setup() {
         const dataDetail = ref([]);
-        // const { id } = router?.state; 
+        const user = window.history.state?.user || {};
+        const id = user.id || "67d146c230e269304cd681a1"; // Get id safely
+
+        console.log(id); // Logs the user ID
 
         const getDetailUserData = async () => {
-            // const state = window.history.state;
-            // console.log(state)
-            // if (state && state.user_id) {
-            //     item.value = state.user_id;
-            //     console.log(item.value)
-            // }
             try {
                 const payload = {
-                    user_id: "67cda160f4e63aa92821ed0e"
+                    "user_id": id
                 }
-                const result = await fetchAPI.post('http://rifile.trueddns.com:48195/api/User/GetUsers', payload);
-                if (result) {
-                    dataDetail.value = result
-                }
-                console.log(result)
+                const result = await fetchAPI.post('http://rifile.trueddns.com:48195/api/User/GetDetailUser', payload);
+                if (result && result.user) {
+                    dataDetail.value = [result.user]
+                } 
             } catch (error) {
                 console.error('Error fetching data:', error);
+                 dataDetail.value = [ {
+                    address:"-",
+                    allergic_medication:"-",
+                    birthdate:"-",
+                    blood:"-",
+                    chronic_disease:"-",
+                    citizen_id:"-",
+                    current_medication:"-",
+                    email:"-",
+                    emergency_number:['-'],
+                    fullname:"-",
+                    height:"-",
+                    hospital_name:['-'],
+                    phone:"-",
+                    prefix:"-",
+                    primary_care_physician :['-'],
+                    profile_image:"-",
+                    user_id:"-",
+                    user_type_id:"-",
+                    user_type_name:"-",
+                    username:"-",
+                    weight:"-",
+                    }]
             }
         };
 
         onMounted(() => {
-            // getDetailUserData();
+            getDetailUserData();
         });
 
         return {
-
+            dataDetail
         };
     },
 };
