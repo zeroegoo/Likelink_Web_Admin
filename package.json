@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.0",
+    "cors": "^2.8.5",
     "nuxt": "^3.15.4",
     "tailwindcss": "^4.0.0",
     "vue": "latest",
     "vue-router": "latest",
     "vuex": "^4.0.2"
   },
-  "proxy": "http://rifile.trueddns.com:48195"
+  "proxy": "http://rifile.trueddns.com:48195",
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
+  }
 }
