@@ -181,8 +181,8 @@ export default {
     },
     setup() {
         const dataDetail = ref([]);
-        const user = window.history.state?.user || {};
-        const id = user.id || "67d146c230e269304cd681a1"; // Get id safely
+        const user = window?.history?.state?.user || {}; 
+        const id = user.id || "67d146c230e269304cd681a1"; 
 
         console.log(id); // Logs the user ID
 
