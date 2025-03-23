@@ -85,6 +85,7 @@ export default {
           // dataDetail.value = result
           console.log(result)
           this.$router.push('/EmergencyAlert');
+          localStorage.setItem("isLoggedIn", "true")
         }
         console.log(result)
         } catch (error) {

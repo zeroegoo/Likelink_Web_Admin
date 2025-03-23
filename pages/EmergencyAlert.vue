@@ -16,8 +16,7 @@
 
     <div class="flex flex-row flex-1 overflow-y-auto">
       <div v-if="dataDetail" class="flex flex-wrap gap-4 p-4 w-full lg:w-3/4 overflow-y-auto" id="scroll">
-        <div v-for="item in dataDetail" :key="item.task_id" class="flex-grow sm:w-1/2 lg:w-1/3 xl:w-1/4 w-full"
-          @click="() => handleClickFallingDetection(item)">
+        <div v-for="item in dataDetail" :key="item.task_id" class="flex-grow sm:w-1/2 lg:w-1/3 xl:w-1/4 w-full">
           <AlertDetail :item="item" />
         </div>
       </div>
@@ -93,19 +92,12 @@ export default {
       }
     };
 
-    const handleClickFallingDetection = (item) => {
-      const user_id = item.user_id;
-      
-      router.push({ path: "/FallingDetection", state: { user: { id: user_id } } });
-    };
-
     onMounted(() => {
       getData();
     });
 
     return {
       dataDetail,
-      handleClickFallingDetection
     };
   },
 };

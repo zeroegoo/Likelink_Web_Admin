@@ -1,8 +1,9 @@
 <template>
-    <aside
-      class="bg-cyan-500 text-white w-64 p-4 fixed top-0 left-0 h-screen overflow-y-auto transition-all duration-300"
-      :class="{ '-translate-x-full': !isSidebarOpen }"
-    >
+  <aside
+    class="bg-cyan-500 text-white w-64 p-4 fixed top-0 left-0 h-screen overflow-y-auto transition-all duration-300 flex flex-col justify-between"
+    :class="{ '-translate-x-full': !isSidebarOpen }"
+  >
+    <div>
       <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold mb-4">EMS</h1>
         <div
@@ -32,65 +33,91 @@
           <router-link to="/Setting" class="text-xl hover:text-neutral-500">Setting</router-link>
         </li>
       </ul>
-    </aside>
-  
-    <div
-      v-if="!isSidebarOpen"
-      class="fixed top-0 left-0 p-3 bg-cyan-500 text-white rounded-r-xl text-2xl font-bold shadow-md cursor-pointer"
-      @click="openSidebar"
-    >
-      &gt;&gt;
     </div>
-  </template>
-  
-  <script lang="ts">
-  import { defineComponent, ref, onMounted, onUnmounted } from "vue";
-  
-  export default defineComponent({
-    name: "Sidebar",
-    props: {
-      onSidebarToggle: {
-        type: Function,
-        required: true,
-      },
+
+    <!-- Logout Button -->
+    <div class="mt-auto">
+      <button
+        class="w-full py-2 bg-red-500 hover:bg-red-700 text-white font-bold rounded-md"
+        @click="logout"
+      >
+      <!-- <img src="../../assets/icons/logout.jpg" /> -->
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <div
+    v-if="!isSidebarOpen"
+    class="fixed top-0 left-0 p-3 bg-cyan-500 text-white rounded-r-xl text-2xl font-bold shadow-md cursor-pointer"
+    @click="openSidebar"
+  >
+    &gt;&gt;
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+
+export default defineComponent({
+  name: "Sidebar",
+  props: {
+    onSidebarToggle: {
+      type: Function,
+      required: true,
     },
-    setup(props) {
-      const isSidebarOpen = ref(true);
-  
-      const toggleSidebar = () => {
-        isSidebarOpen.value = !isSidebarOpen.value;
-        props.onSidebarToggle(isSidebarOpen.value);
-      };
-  
-      const openSidebar = () => {
+  },
+  setup(props) {
+    const isSidebarOpen = ref(true);
+    const router = useRouter();
+
+    const toggleSidebar = () => {
+      isSidebarOpen.value = !isSidebarOpen.value;
+      props.onSidebarToggle(isSidebarOpen.value);
+    };
+
+    const openSidebar = () => {
+      isSidebarOpen.value = true;
+      props.onSidebarToggle(isSidebarOpen.value);
+    };
+
+    const checkScreenSize = () => {
+      if (window.innerWidth < 1000) {
+        isSidebarOpen.value = false;
+      } else {
         isSidebarOpen.value = true;
-        props.onSidebarToggle(isSidebarOpen.value);
-      };
-  
-      const checkScreenSize = () => {
-        if (window.innerWidth < 1000) {
-          isSidebarOpen.value = false;
-        } else {
-          isSidebarOpen.value = true;
-        }
-        props.onSidebarToggle(isSidebarOpen.value);
-      };
-  
-      onMounted(() => {
-        checkScreenSize();
-        window.addEventListener("resize", checkScreenSize);
-      });
-  
-      onUnmounted(() => {
-        window.removeEventListener("resize", checkScreenSize);
-      });
-  
-      return {
-        isSidebarOpen,
-        toggleSidebar,
-        openSidebar,
-      };
-    },
-  });
-  </script>
-  
+      }
+      props.onSidebarToggle(isSidebarOpen.value);
+    };
+
+    const logout = () => {
+      console.log("Logging out...");
+      localStorage.removeItem("isLoggedIn"); 
+      router.push("/login");
+    };
+
+    onMounted(() => {
+      checkScreenSize();
+      window.addEventListener("resize", checkScreenSize);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener("resize", checkScreenSize);
+    });
+
+    return {
+      isSidebarOpen,
+      toggleSidebar,
+      openSidebar,
+      logout,
+    };
+  },
+});
+</script>
+
+<style scoped>
+button {
+  transition: background 0.3s;
+}
+</style>

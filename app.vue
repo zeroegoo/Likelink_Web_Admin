@@ -16,14 +16,12 @@ import { useRouter } from 'vue-router';
 export default defineComponent({
   setup() {
     const router = useRouter();
-    
     const currentRouteName = computed(() => router.currentRoute.value.name);
 
     onMounted(() => {
       const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
       if (!isLoggedIn && currentRouteName.value !== 'Login') {
-        // router.push('/EmergencyAlert');
-        router.push('/Login');
+        router.replace('/Login');
       }
     });
 
