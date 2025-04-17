@@ -73,7 +73,7 @@ export default {
 
     const getData = async () => {
       try {
-        const result = await fetchAPI.get('http://rifile.trueddns.com:48195/api/Task/GetTasks');
+        const result = await fetchAPI.get('https://lifelinkapi.sakdithatlks.com/api/Task/GetTasks');
         if (result) {
           dataDetail.value = result
         }

@@ -80,7 +80,7 @@ export default {
               "username": this.userId,
               "password": this.password
             }
-        const result = await fetchAPI.post('http://rifile.trueddns.com:48195/api/User/Login', payload);
+        const result = await fetchAPI.post('https://lifelinkapi.sakdithatlks.com/api/User/Login', payload);
         if(result) {
           // dataDetail.value = result
           console.log(result)

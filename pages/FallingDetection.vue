@@ -99,7 +99,7 @@ export default {
                 const payload = {
                     "user_id": userId
                 }
-                const result = await fetchAPI.post('http://rifile.trueddns.com:48195/api/User/GetDetailUser', payload);
+                const result = await fetchAPI.post('https://lifelinkapi.sakdithatlks.com/api/User/GetDetailUser', payload);
                 if (result && result.user) {
                     dataUserDetail.value = [result.user]
                     console.log(result)
@@ -114,7 +114,7 @@ export default {
                 const payload = {
                     "task_id": taskId
                 }
-                const result = await fetchAPI.post('http://rifile.trueddns.com:48195/api/Task/GetTaskByTaskId', payload);
+                const result = await fetchAPI.post('https://lifelinkapi.sakdithatlks.com/api/Task/GetTaskByTaskId', payload);
                 console.log(result)
                 if (result && result.task) {
                     dataTaskDetail.value = [result.task]
