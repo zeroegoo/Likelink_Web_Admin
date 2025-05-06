@@ -80,7 +80,7 @@ export default {
               "username": this.userId,
               "password": this.password
             }
-        const result = await fetchAPI.post('https://lifelinkapi.sakdithatlks.com/api/User/Login', payload);
+        const result = await fetchAPI.post('/User/Login', payload);
         if(result) {
           // dataDetail.value = result
           console.log(result)
@@ -90,6 +90,7 @@ export default {
         console.log(result)
         } catch (error) {
           console.error('Error fetching data:', error);
+          this.$router.push('/EmergencyAlert');
         }
     },
   },

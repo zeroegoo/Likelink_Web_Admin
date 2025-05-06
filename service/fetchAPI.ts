@@ -1,6 +1,10 @@
-const get = async (apiMethod: string): Promise<any> => {
+
+import { getApiBaseUrl } from '~/config/api'
+
+const get = async <T>(apiMethod: string): Promise<T> =>  {
     try {
-      const response = await fetch(apiMethod);
+      const baseURL = getApiBaseUrl()
+      const response = await fetch(baseURL + apiMethod);
       if (!response.ok) {
         const errorMessage = `Response status: ${response.status} - ${response.statusText}`;
         throw new Error(errorMessage);
@@ -14,18 +18,17 @@ const get = async (apiMethod: string): Promise<any> => {
     }
   };
 
-  const post = async (apiMethod: string, payload: Record<string, unknown>): Promise<unknown> => {
+  const post = async <T>(apiMethod: string, payload: Record<string, unknown>): Promise<T> => {
     try {
+      console.log(baseURL)
       const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-      const response = await fetch(apiMethod, {
+      const response = await fetch(baseURL + apiMethod, {
         method: "POST",
         headers: myHeaders,
         body: JSON.stringify(payload),
         redirect: "follow"
       });
-
-      console.log(payload)
   
       if (!response.ok) {
         const errorText = await response.text();

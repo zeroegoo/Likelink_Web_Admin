@@ -52,12 +52,18 @@
         <div v-if="dataUserDetail && dataUserDetail.length > 0" class="flex-1 p-9 border-l-2 border-gray-400 overflow-auto">
             <div v-for="item in dataUserDetail" :key="item.id" class="h-full flex flex-col justify-between">
                 <PersonalInformation :item="item" />
+                <div class="rounded-xl ">
+                    <Map />
+                </div>
                 <div class="flex w-full justify-end space-x-4 mt-4">
                     <button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none">
                         Accept
                     </button>
                     <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none">
                         Decline
+                    </button>
+                    <button class="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-red-600 focus:outline-none">
+                        Export
                     </button>
                 </div>
             </div>
@@ -70,12 +76,14 @@ import { ref, onMounted } from 'vue';
 import fetchAPI from '../../service/fetchAPI.ts';
 import PersonalInformation from '~/components/elements/PersonalInformation.vue';
 import TaskDetail from '~/components/elements/TaskDetail.vue';
+import Map from '~/components/elements/Map.vue';
 
 export default {
     name: "FallingDetection",
     components: {
         PersonalInformation,
-        TaskDetail
+        TaskDetail,
+        Map
     },
     setup() {
         const dataUserDetail = ref([]);
@@ -99,13 +107,14 @@ export default {
                 const payload = {
                     "user_id": userId
                 }
-                const result = await fetchAPI.post('https://lifelinkapi.sakdithatlks.com/api/User/GetDetailUser', payload);
+                const result = await fetchAPI.post('User/GetDetailUser', payload);
                 if (result && result.user) {
                     dataUserDetail.value = [result.user]
                     console.log(result)
                 } 
             } catch (error) {
                 console.error('Error fetching data:', error);
+                dataTaskDetail.value = [result.task]
             }
         };
 
@@ -114,13 +123,36 @@ export default {
                 const payload = {
                     "task_id": taskId
                 }
-                const result = await fetchAPI.post('https://lifelinkapi.sakdithatlks.com/api/Task/GetTaskByTaskId', payload);
+                const result = await fetchAPI.post('Task/GetTaskByTaskId', payload);
                 console.log(result)
                 if (result && result.task) {
                     dataTaskDetail.value = [result.task]
                 } 
             } catch (error) {
                 console.error('Error fetching data:', error);
+                dataUserDetail.value = [{
+                        address: "-",
+                        allergic_medication: "-",
+                        birthdate: "-",
+                        blood: "-",
+                        chronic_disease: "-",
+                        citizen_id: "-",
+                        current_medication: "-",
+                        email: "-",
+                        emergency_number: ['-'],
+                        fullname: "-",
+                        height: "-",
+                        hospital_name: ['-'],
+                        phone: "-",
+                        prefix: "-",
+                        primary_care_physician: ['-'],
+                        profile_image: "-",
+                        user_id: "-",
+                        user_type_id: "-",
+                        user_type_name: "-",
+                        username: "-",
+                        weight: "-",
+                    }]
             }
         };
 

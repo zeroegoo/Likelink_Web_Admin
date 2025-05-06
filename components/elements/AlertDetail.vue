@@ -1,93 +1,116 @@
 <template>
-  <div v-if="item" class="block p-4 shadow-md border border-gray-200 border-t-0" @click="handleClickFallingDetection">
-    <!-- Description Section -->
-    <div class="mb-4">
-      {{ item.description }}
+  <div v-if="item" class="p-2" @click="handleClickFallingDetection">
+  <div class="bg-white rounded-xl shadow-md p-3 w-full h-full">
+    <div class="mb-3">
+      <h2 class="text-base font-semibold text-gray-800">Updates</h2>
+      <p class="text-sm text-gray-500">01/01/2025 00.00 AM</p>
     </div>
 
-    <!-- Main Content Section -->
-    <div class="flex flex-wrap items-start justify-between gap-4">
-      <!-- Profile Icon -->
-      <div class="h-16 w-16 min-w-14 flex-shrink-0">
-        <img src="../../assets/icons/pofile.png" alt="Profile Icon" class="h-full w-full object-contain" />
+    <div class="flex flex-col lg:flex-row gap-3">
+      <div class="flex flex-col items-center text-center w-full lg:w-1/5">
+        <div class="w-20 h-20 rounded-full overflow-hidden mb-2">
+          <img src="../../assets/icons/pofile.png" alt="Profile" class="w-full h-full object-cover" />
+        </div>
+        <h3 class="font-bold text-sm">Mrs. Somsri</h3>
+        <h4 class="text-sm text-gray-500">Wannatest</h4>
+        <p class="text-sm text-gray-500">87 Years</p>
+        <p class="text-sm">1-1111-11111-1-11</p>
       </div>
 
-      <!-- Details Section -->
-      <div class="flex-1">
-        <div class="flex flex-col space-y-2">
-          <span class="block">{{ item.location }}</span>
-          <span class="block ">
-            <!-- <div>{{ item.video_image_link }}</div> -->
-          </span>
-          <!-- <span class="block text-blue-500 underline cursor-pointer break-all">
-            <div>{{ item.video_image_link }}</div>
-          </span> -->
-          <span class="block text-sm font-semibold">{{ item.task_status_name }}</span>
-          <div class="flex items-center space-x-4">
-            <button @click.stop="likeAction" class="text-blue-500 font-medium hover:underline">
-              Like
-            </button>
-            <button @click.stop="pinAction" class="text-blue-500 font-medium hover:underline">
-              Pin
-            </button>
+      <div class="flex flex-col gap-2 flex-1">
+        <div class="text-sm">
+          <div class="flex ">
+            <img class="h-4 w-4 items-center text-center" src="../../assets/icons/majesticons_map-marker.png" />
+            <p class="font-semibold">Address</p>
           </div>
-          <input v-model="inputValue" type="text" id="user-input" placeholder="Comment"
-            class="mt-2 w-full border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring focus:ring-blue-300 z-10"
-            @click.stop />
+          <p class="bg-gray-100 p-2 rounded-xl">A space play 291/109 sutthisan bkk</p>
+        </div>
+        <div class="text-sm">
+          <div class="flex ">
+            <img class="h-5 w-5 items-center text-center" src="../../assets/icons/healthicons_insurance-card.png" />
+            <p class="font-semibold">Insurance</p>
+          </div>
+          <p class="bg-gray-100 p-2 rounded-xl">เอไอเอ (AIA)</p>
+        </div>
+        <div class="text-sm">
+          <div class="flex ">
+            <img class="h-5 w-5 items-center text-center" src="../../assets/icons/famicons_medical-sharp.png" />
+            <p class="font-semibold">Volunteer</p>
+          </div>
+          <p class="bg-gray-100 p-2 rounded-xl">Volunteer</p>
+        </div>
+        <div class="text-sm">
+          <div class="flex ">
+            <img class="h-5 w-5 items-center text-center" src="../../assets/icons/mdi_ambulance.png" />
+            <p class="font-semibold">Unit Info</p>
+          </div>
+          <p class="bg-gray-100 p-2 rounded-xl">1669 EMS Center</p>
         </div>
       </div>
 
-      <!-- Timestamp Section -->
-      <div class="text-right flex-shrink-0">
-        <span class="text-sm text-gray-500">{{ item.updated_timestamp }}</span>
+      <div class="flex flex-col h-inherit justify-between gap-1 lg:w-1/3 border-l border-gray-200 pl-2">
+        <p class="text-sm text-red-500 font-semibold">Falling</p>
+        <div class="w-full h-full aspect-video rounded-xl overflow-hidden">
+          <img src="../../assets/icons/pexels-ricky-esquivel-2627063.jpg" class="object-cover w-full h-full" />
+        </div>
+        <div class="text-sm mt-1">
+          <p class="font-semibold">Description</p>
+          <p class="bg-gray-100 p-2 rounded-xl">ภายในห้องครัว</p>
+        </div>
+        <div class="flex gap-2 mt-2">
+          <button class="bg-green-500 text-white text-sm flex-1 py-1 rounded-full">Accept</button>
+          <button class="bg-red-500 text-white text-sm flex-1 py-1 rounded-full">Reject</button>
+        </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, toRefs, ref } from "vue";
-import { useRouter } from "vue-router";
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props) {
-    const router = useRouter();
-    const { item } = toRefs(props);
-    const inputValue = ref("");
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { defineProps, toRefs, ref } from 'vue'
 
-    // Handle navigation
-    const handleClickFallingDetection = () => {
-      if (item.value && item.value.user_id) {
-        console.log(item)
-        router.push({
-          path: "/FallingDetection",
-          state: { user: { userId: item.value.user_id, taskId: item.value.task_id } },
-        });
+const router = useRouter()
+
+const props = defineProps<{
+  item: {
+    user_id?: string,
+    task_id?: string
+  }
+}>()
+
+const { item } = toRefs(props)
+const inputValue = ref("")
+
+// Navigation
+const handleClickFallingDetection = () => {
+  if (item.value?.user_id) {
+    router.push({
+      path: "/FallingDetection",
+      state: {
+        user: {
+          userId: item.value.user_id,
+          taskId: item.value.task_id
+        }
       }
-    };
+    })
+  } else {
+    router.push({ path: "/FallingDetection" })
+  }
+}
 
-    return {
-      item,
-      inputValue,
-      handleClickFallingDetection,
-    };
-  },
-  methods: {
-    likeAction() {
-      console.log("Liked");
-    },
-    pinAction() {
-      console.log("Pinned");
-    },
-  },
-});
+// Other actions
+const likeAction = () => {
+  console.log("Liked")
+}
+
+const pinAction = () => {
+  console.log("Pinned")
+}
 </script>
+
 
 <style scoped>
 /* Add your styles here */

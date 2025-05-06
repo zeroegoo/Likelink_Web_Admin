@@ -31,7 +31,6 @@ export default defineComponent({
         },
     },
     setup(props) {
-
         const taskItems = ref(props.item || {}); // Ensures it starts with `item` or `null`
         console.log(taskItems)
         return { taskItems };
