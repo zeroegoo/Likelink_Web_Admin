@@ -13,81 +13,83 @@
 
         <p v-if="geolocationError" class="text-red-500">{{ geolocationError }}</p>
 
-        <!-- <div class="mb-2">
-            <button @click="rotateArrow(45)" class="px-2 py-1 bg-gray-300 rounded mr-1">+ Rotate</button>
-            <button @click="rotateArrow(-45)" class="px-2 py-1 bg-gray-300 rounded">- Rotate</button>
-        </div> -->
-
         <div class="rounded-xl" id="map" style="height: 400px;"></div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import L from 'leaflet'
+import { ref, onMounted } from 'vue';
 import heartIcon from '../../assets/icons/heart.png'
 
-// State
-let map
-let userMarker
-let destinationMarker
-let polyline
-let arrowMarker
-let lastLatLng = null
-let lastFetchLatLng = null
-let lastPanTime = 0
-const manualRotation = ref(0)
-const geolocationError = ref('')
+let map = null;
+let userMarker = null;
+let destinationMarker = null;
+let polyline = null;
+let arrowMarker = null;
+let lastLatLng = null;
+let lastFetchLatLng = null;
+let lastPanTime = 0;
+const manualRotation = ref(0);
+const geolocationError = ref('');
 
-// Destination
-const destination = [13.7626, 100.5360]
-const distanceToDest = ref(null)
+const destination = [13.7626, 100.5360];
+const distanceToDest = ref(null);
 
-const initMap = () => {
-    map = L.map('map').setView(destination, 15)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(map)
+// Dynamically import Leaflet on the client-side only
+let L = null;
+const initMap = async () => {
+    if (process.client) {
+        const leafletModule = await import('leaflet');
+        L = leafletModule.default;
+        import('leaflet/dist/leaflet.css'); // Import Leaflet CSS
 
-    destinationMarker = L.marker(destination)
-        .addTo(map)
-        .bindPopup('ปลายทาง')
-        .openPopup()
-}
+        map = L.map('map').setView(destination, 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(map);
 
-// Haversine formula
+        destinationMarker = L.marker(destination)
+            .addTo(map)
+            .bindPopup('ปลายทาง')
+            .openPopup();
+    }
+};
+
 const getDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371e3
-    const φ1 = lat1 * Math.PI / 180
-    const φ2 = lat2 * Math.PI / 180
-    const Δφ = (lat2 - lat1) * Math.PI / 180
-    const Δλ = (lon2 - lon1) * Math.PI / 180
+    const R = 6371e3;
+    const φ1 = lat1 * Math.PI / 180;
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
 
     const a =
         Math.sin(Δφ / 2) ** 2 +
-        Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    return R * c
-}
+    return R * c;
+};
 
 const createRotatingIcon = (rotation) => {
-    const finalRotation = rotation + manualRotation.value;
-    return L.divIcon({
-        html: `
-          <div class="rotated-icon" style="transform: rotate(${finalRotation}deg);">
-            <img src="${heartIcon}" style="width: 20px; height: 20px;" />
-          </div>
-        `,
-        iconSize: [20, 20],
-        className: '',
-    })
-}
+    if (L) {
+        const finalRotation = rotation + manualRotation.value;
+        return L.divIcon({
+            html: `
+              <div class="rotated-icon" style="transform: rotate(${finalRotation}deg);">
+                <img src="${heartIcon}" style="width: 20px; height: 20px;" />
+              </div>
+            `,
+            iconSize: [20, 20],
+            className: '',
+        });
+    }
+    return null;
+};
 
 const startTracking = async () => {
-    geolocationError.value = ''; // Reset error message
+    geolocationError.value = '';
 
-    if (!navigator.geolocation) {
+    if (!navigator || !navigator.geolocation) {
         geolocationError.value = 'Geolocation ไม่รองรับบนอุปกรณ์นี้';
         return;
     }
@@ -111,7 +113,7 @@ const startTracking = async () => {
 
     navigator.geolocation.watchPosition(
         async (position) => {
-            geolocationError.value = ''; // Reset error message on successful position
+            geolocationError.value = '';
 
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
@@ -120,19 +122,17 @@ const startTracking = async () => {
             // Calculate the distance to destination
             distanceToDest.value = getDistance(lat, lng, destination[0], destination[1]);
 
-            if (!userMarker) {
+            if (!userMarker && map) {
                 userMarker = L.marker(current).addTo(map).bindPopup('ตำแหน่งของคุณ').openPopup();
-            } else {
+            } else if (userMarker) {
                 userMarker.setLatLng(current);
             }
 
-            // Only pan every 2 seconds
-            if (Date.now() - lastPanTime > 2000) {
+            if (map && Date.now() - lastPanTime > 2000) {
                 map.panTo(current);
                 lastPanTime = Date.now();
             }
 
-            // Fetch route if moved 30+ meters
             if (!lastFetchLatLng || getDistance(lastFetchLatLng[0], lastFetchLatLng[1], current[0], current[1]) > 30) {
                 lastFetchLatLng = current;
 
@@ -144,7 +144,7 @@ const startTracking = async () => {
 
                     if (polyline) {
                         polyline.setLatLngs(coords);
-                    } else {
+                    } else if (map) {
                         polyline = L.polyline(coords, { color: 'blue' }).addTo(map);
                     }
                 } catch (err) {
@@ -152,13 +152,13 @@ const startTracking = async () => {
                 }
             }
 
-            if (!arrowMarker) {
+            if (!arrowMarker && map) {
                 arrowMarker = L.marker(current, {
                     icon: createRotatingIcon(0),
                 }).addTo(map);
-            } else {
+            } else if (arrowMarker) {
                 arrowMarker.setLatLng(current);
-                arrowMarker.setIcon(createRotatingIcon(0)); // Update icon on position change as well
+                arrowMarker.setIcon(createRotatingIcon(0)); // Update icon on position change
             }
 
             lastLatLng = current;
@@ -188,7 +188,7 @@ const startTracking = async () => {
 };
 
 const handleOrientation = (event) => {
-    if (event.alpha !== null) {
+    if (L && event.alpha !== null) {
         const heading = event.alpha; // Use alpha for compass heading
         if (arrowMarker) {
             arrowMarker.setIcon(createRotatingIcon(heading));
@@ -196,16 +196,9 @@ const handleOrientation = (event) => {
     }
 };
 
-// const rotateArrow = (degrees) => {
-//     manualRotation.value += degrees;
-//     if (arrowMarker) {
-//         arrowMarker.setIcon(createRotatingIcon(0)); // Re-apply icon to update rotation
-//     }
-// };
-
 onMounted(() => {
-    initMap()
-})
+    initMap(); // Ensure the map initializes only after the component is mounted
+});
 </script>
 
 <style scoped>

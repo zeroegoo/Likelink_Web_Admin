@@ -77,7 +77,7 @@
                         <div class="font-semibold text-black text-base">Allergies</div>
                         <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{
                             personalItems.allergic_medication
-                            }}</div>
+                        }}</div>
                     </div>
 
                     <!-- Blood -->
@@ -91,47 +91,43 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export default defineComponent({
-    props: {
-        item: {
-            type: Object,
-            required: true,
-        },
-    },
-    setup(props) {
-
-        const dataDetail = [{
-            address: "-",
-            allergic_medication: "-",
-            birthdate: "-",
-            blood: "-",
-            chronic_disease: "-",
-            citizen_id: "-",
-            current_medication: "-",
-            email: "-",
-            emergency_number: ['-'],
-            fullname: "-",
-            height: "-",
-            hospital_name: ['-'],
-            phone: "-",
-            prefix: "-",
-            primary_care_physician: ['-'],
-            profile_image: "-",
-            user_id: "-",
-            user_type_id: "-",
-            user_type_name: "-",
-            username: "-",
-            weight: "-",
-        }]
-
-        const personalItems = ref(props.item ?? dataDetail); // Ensures it starts with `item` or `null`
-
-        return { personalItems };
+// Props definition
+const props = defineProps({
+    item: {
+        type: Object,
+        required: true,
     },
 });
+
+// Default data
+const dataDetail = [{
+    address: "-",
+    allergic_medication: "-",
+    birthdate: "-",
+    blood: "-",
+    chronic_disease: "-",
+    citizen_id: "-",
+    current_medication: "-",
+    email: "-",
+    emergency_number: ['-'],
+    fullname: "-",
+    height: "-",
+    hospital_name: ['-'],
+    phone: "-",
+    prefix: "-",
+    primary_care_physician: ['-'],
+    profile_image: "-",
+    user_id: "-",
+    user_type_id: "-",
+    user_type_name: "-",
+    username: "-",
+    weight: "-",
+}];
+
+const personalItems = ref(props.item ?? dataDetail);
 </script>
 
 <style scoped></style>

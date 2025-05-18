@@ -20,22 +20,22 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup>
+import { ref } from 'vue';
 
-export default defineComponent({
-    props: {
-        item: {
-            type: Object,
-            required: true,
-        },
-    },
-    setup(props) {
-        const taskItems = ref(props.item || {}); // Ensures it starts with `item` or `null`
-        console.log(taskItems)
-        return { taskItems };
-    },
+// Props
+const props = defineProps({
+    item: {
+        type: Object,
+        required: true
+    }
 });
+
+// Reactive variable initialized with the prop
+const taskItems = ref(props.item || {});
+
+console.log(taskItems);
 </script>
+
 
 <style scoped></style>

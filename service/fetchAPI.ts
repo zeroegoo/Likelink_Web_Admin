@@ -10,7 +10,6 @@ const get = async <T>(apiMethod: string): Promise<T> =>  {
         throw new Error(errorMessage);
       }
       const json = await response.json();
-      console.log(json);
       return json;
     } catch (error: any) {
       console.error(`Error fetching data: ${error.message}`);
@@ -20,7 +19,7 @@ const get = async <T>(apiMethod: string): Promise<T> =>  {
 
   const post = async <T>(apiMethod: string, payload: Record<string, unknown>): Promise<T> => {
     try {
-      console.log(baseURL)
+      const baseURL = getApiBaseUrl()
       const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
       const response = await fetch(baseURL + apiMethod, {
@@ -31,9 +30,8 @@ const get = async <T>(apiMethod: string): Promise<T> =>  {
       });
   
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`Response error: ${errorText}`);
-        throw new Error(`HTTP error! status: ${response.status}, ${response.statusText}, Details: ${errorText}`);
+        const errorData = await response.json(); // Get the JSON body
+        throw new Error(errorData.message); // Only keep the message
       }
   
       const json = await response.json();
@@ -41,7 +39,7 @@ const get = async <T>(apiMethod: string): Promise<T> =>  {
     } catch (error) {
       console.error("Error in fetch:", error);
       if (error instanceof Error) {
-        throw new Error(`Failed to post data: ${error.message}`);
+        throw new Error(`${error.message}`);
       } else {
         throw new Error("An unknown error occurred during data posting.");
       }

@@ -11,94 +11,70 @@
     </div>
 
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
-  <div class="text-center z-10">
-    <h3 class="text-cyan-500 text-[360px] font-semibold text-center sm:text-[140px] xs:text-[100px]">
-      LIFELINK
-    </h3>
-    <form @submit.prevent="handleLogin" class="max-w-md mx-auto p-6 ">
-      <div class="mb-4 relative">
-        <input
-          type="text"
-          v-model="userId"
-          id="userId"
-          class="mt-1 block w-full rounded-full px-4 py-2 pl-10 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-          required
-          placeholder="Username"
-        />
-        <img
-          src="../assets/icons/loginprofine.png"
-          alt="loginprofine Icon"
-          class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5"
-        />
+      <div class="text-center z-10">
+        <h3 class="text-cyan-500 text-[360px] font-semibold text-center sm:text-[140px] xs:text-[100px]">
+          LIFELINK
+        </h3>
+        <form @submit.prevent="handleLogin" class="max-w-md mx-auto p-6 ">
+          <div class="mb-4 relative">
+            <input type="text" v-model="userId" id="userId"
+              class="mt-1 block w-full rounded-full px-4 py-2 pl-10 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+              required placeholder="Username" />
+            <img src="../assets/icons/loginprofine.png" alt="loginprofine Icon"
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
+          </div>
+          <div class="mb-4 relative">
+            <input type="password" v-model="password" id="password"
+              class="mt-1 block w-full  rounded-full px-4 py-2 pl-10 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+              required placeholder="Password" />
+            <img src="../assets/icons/password.png" alt="password Icon"
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
+          </div>
+          <button type="submit"
+            class="w-48 max-w-md p-3 rounded-full bg-cyan-500 text-white hover:bg-cyan-600 transition duration-200">
+            Login
+          </button>
+        </form>
+        <p v-if="loginError" class="text-red-500 text-center mt-4">{{ loginError }}</p>
       </div>
-      <div class="mb-4 relative">
-        <input
-          type="password"
-          v-model="password"
-          id="password"
-          class="mt-1 block w-full  rounded-full px-4 py-2 pl-10 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-          required
-          placeholder="Password"
-        />
-        <img
-          src="../assets/icons/password.png"
-          alt="password Icon"
-          class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5"
-        />
-      </div>
-      <button
-        type="submit"
-        class="w-48 max-w-md p-3 rounded-full bg-cyan-500 text-white hover:bg-cyan-600 transition duration-200"
-      >
-        Login
-      </button>
-    </form>
-    <p v-if="loginError" class="text-red-500 text-center mt-4">{{ loginError }}</p>
-  </div>
-</div>
+    </div>
   </div>
 </template>
-
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import fetchAPI from '../../service/fetchAPI.ts';
-export default {
-  name: "Login",
-    components: {
-  },
-  setup() {
-    return {
-      userId: '',
-      password: '',
-      loginError: '',
+
+const router = useRouter();
+
+// Reactive variables
+const userId = ref('');
+const password = ref('');
+const loginError = ref('');
+
+// Handle login
+const handleLogin = async () => {
+  try {
+    const payload = {
+      user_type_id: "3",
+      username: userId.value,
+      password: password.value,
+      fcm_token: ""
     };
-  },
-  methods: {
-    async handleLogin() {
-        try {
-          const payload = {
-              "user_type_id": "3",
-              "username": this.userId,
-              "password": this.password
-            }
-        const result = await fetchAPI.post('/User/Login', payload);
-        if(result) {
-          // dataDetail.value = result
-          console.log(result)
-          this.$router.push('/EmergencyAlert');
-          localStorage.setItem("isLoggedIn", "true")
-        }
-        console.log(result)
-        } catch (error) {
-          console.error('Error fetching data:', error);
-          this.$router.push('/EmergencyAlert');
-        }
-    },
-  },
+
+    const result = await fetchAPI.post('User/Login', payload);
+    if (result) {
+      localStorage.setItem("isLoggedIn", "true");
+      router.push('/EmergencyAlert');
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    alert(error.message)
+  }
 };
 </script>
 
 <style scoped>
-
 .login-container {
   position: fixed;
   top: 0;
@@ -114,12 +90,12 @@ export default {
 
 
 .half-circle-container.left {
-    position: absolute;
-    left: -0%;
-    bottom: 0%;
-    width: 50vw;
-    height: 60vh;
-    z-index: 1;
+  position: absolute;
+  left: -0%;
+  bottom: 0%;
+  width: 50vw;
+  height: 60vh;
+  z-index: 1;
 }
 
 .half-circle-container.right {
@@ -143,8 +119,8 @@ export default {
   left: 25px;
   left: -50%;
   bottom: -2%;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   opacity: 0.2
 }
@@ -154,8 +130,8 @@ export default {
   left: 25px;
   right: -50%;
   bottom: -2%;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   opacity: 0.2
 }
@@ -165,8 +141,8 @@ export default {
   left: 25px;
   left: -30%;
   bottom: -40%;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   opacity: 0.2
 }
@@ -176,8 +152,8 @@ export default {
   left: 25px;
   left: -30%;
   bottom: -40%;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   opacity: 0.2
 }

@@ -7,7 +7,7 @@
                     <TaskDetail :item="item" />
                 </div>
             </div>
-            
+
             <!-- Health Data Overlay -->
             <div class="mt-10">
                 <div class="text-xl font-bold">Health Data Overlay</div>
@@ -49,7 +49,8 @@
         </div>
 
         <!-- Right Section: Personal Information -->
-        <div v-if="dataUserDetail && dataUserDetail.length > 0" class="flex-1 p-9 border-l-2 border-gray-400 overflow-auto">
+        <div v-if="dataUserDetail && dataUserDetail.length > 0"
+            class="flex-1 p-9 border-l-2 border-gray-400 overflow-auto">
             <div v-for="item in dataUserDetail" :key="item.id" class="h-full flex flex-col justify-between">
                 <PersonalInformation :item="item" />
                 <div class="rounded-xl ">
@@ -71,107 +72,80 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from 'vue';
 import fetchAPI from '../../service/fetchAPI.ts';
 import PersonalInformation from '~/components/elements/PersonalInformation.vue';
 import TaskDetail from '~/components/elements/TaskDetail.vue';
 import Map from '~/components/elements/Map.vue';
+import { useUserStore } from '../store/user'
 
-export default {
-    name: "FallingDetection",
-    components: {
-        PersonalInformation,
-        TaskDetail,
-        Map
-    },
-    setup() {
-        const dataUserDetail = ref([]);
-        const dataTaskDetail = ref([]);
-        const user = window?.history?.state?.user || {}; 
-        const userId = user.userId || "67d146c230e269304cd681a1"; 
-        const taskId = user.taskId
+// Reactive state
+const dataUserDetail = ref([]);
+const dataTaskDetail = ref([]);
 
-        console.log(userId);
+const userStore = useUserStore()
+const userId = userStore.userId || "67d146c230e269304cd681a1";
+const taskId = userStore.taskId;
 
-        const videoPlayer = ref('../assets/icons/Screen Recording 2025-03-14 131334.mp4');
-
-        const skip = (seconds) => {
-        if (videoPlayer.value) {
-            videoPlayer.value.currentTime += seconds;
+// Fetch user details
+const getDetailUserData = async () => {
+    try {
+        const payload = { "user_id": userId };
+        const result = await fetchAPI.post('User/GetDetailUser', payload);
+        if (result && result.user) {
+            dataUserDetail.value = [result.user];
+            console.log(result);
         }
-        };
-
-        const getDetailUserData = async () => {
-            try {
-                const payload = {
-                    "user_id": userId
-                }
-                const result = await fetchAPI.post('User/GetDetailUser', payload);
-                if (result && result.user) {
-                    dataUserDetail.value = [result.user]
-                    console.log(result)
-                } 
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                dataTaskDetail.value = [result.task]
-            }
-        };
-
-        const getDetailTaskData = async () => {
-            try {
-                const payload = {
-                    "task_id": taskId
-                }
-                const result = await fetchAPI.post('Task/GetTaskByTaskId', payload);
-                console.log(result)
-                if (result && result.task) {
-                    dataTaskDetail.value = [result.task]
-                } 
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                dataUserDetail.value = [{
-                        address: "-",
-                        allergic_medication: "-",
-                        birthdate: "-",
-                        blood: "-",
-                        chronic_disease: "-",
-                        citizen_id: "-",
-                        current_medication: "-",
-                        email: "-",
-                        emergency_number: ['-'],
-                        fullname: "-",
-                        height: "-",
-                        hospital_name: ['-'],
-                        phone: "-",
-                        prefix: "-",
-                        primary_care_physician: ['-'],
-                        profile_image: "-",
-                        user_id: "-",
-                        user_type_id: "-",
-                        user_type_name: "-",
-                        username: "-",
-                        weight: "-",
-                    }]
-            }
-        };
-
-        onMounted(() => {
-            getDetailUserData();
-            getDetailTaskData()
-        });
-
-        return {
-            dataUserDetail,
-            dataTaskDetail,
-            videoPlayer,
-            skip
-        };
-    },
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        dataTaskDetail.value = [result.task];
+    }
 };
+
+// Fetch task details
+const getDetailTaskData = async () => {
+    try {
+        const payload = { "task_id": taskId };
+        const result = await fetchAPI.post('Task/GetTaskByTaskId', payload);
+        console.log(result);
+        if (result && result.task) {
+            dataTaskDetail.value = [result.task];
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        dataUserDetail.value = [{
+            address: "-",
+            allergic_medication: "-",
+            birthdate: "-",
+            blood: "-",
+            chronic_disease: "-",
+            citizen_id: "-",
+            current_medication: "-",
+            email: "-",
+            emergency_number: ['-'],
+            fullname: "-",
+            height: "-",
+            hospital_name: ['-'],
+            phone: "-",
+            prefix: "-",
+            primary_care_physician: ['-'],
+            profile_image: "-",
+            user_id: "-",
+            user_type_id: "-",
+            user_type_name: "-",
+            username: "-",
+            weight: "-",
+        }];
+    }
+};
+
+// Lifecycle hook to fetch data on mount
+onMounted(() => {
+    getDetailUserData();
+    getDetailTaskData();
+});
 </script>
-
-
 
 <style scoped>
 .box-detail-container {
@@ -180,5 +154,4 @@ export default {
     background-color: #ede323;
     border-radius: 10px
 }
-
 </style>

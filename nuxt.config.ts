@@ -9,6 +9,8 @@ loadEnv({ path: envFile })
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  ssr: true,
+  modules: ['@pinia/nuxt'],
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.NUXT_API_BASE_URL_LIFELINK || "",
