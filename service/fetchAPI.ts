@@ -1,10 +1,6 @@
-
-import { getApiBaseUrl } from '~/config/api'
-
 const get = async <T>(apiMethod: string): Promise<T> =>  {
     try {
-      const baseURL = getApiBaseUrl()
-      const response = await fetch(baseURL + apiMethod);
+      const response = await fetch(apiMethod);
       if (!response.ok) {
         const errorMessage = `Response status: ${response.status} - ${response.statusText}`;
         throw new Error(errorMessage);
@@ -19,10 +15,9 @@ const get = async <T>(apiMethod: string): Promise<T> =>  {
 
   const post = async <T>(apiMethod: string, payload: Record<string, unknown>): Promise<T> => {
     try {
-      const baseURL = getApiBaseUrl()
       const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-      const response = await fetch(baseURL + apiMethod, {
+      const response = await fetch(apiMethod, {
         method: "POST",
         headers: myHeaders,
         body: JSON.stringify(payload),

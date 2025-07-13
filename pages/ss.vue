@@ -3,12 +3,8 @@
 </template>
   
   <script lang="ts">
-  definePageMeta({
-  middleware: 'auth'
-})
-
   export default {
-    name: "",
+    name: "Setting",
     components: {
     },
     setup() {

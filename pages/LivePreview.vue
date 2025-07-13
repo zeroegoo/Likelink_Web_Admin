@@ -3,6 +3,10 @@
 </template>
   
   <script lang="ts">
+  definePageMeta({
+  middleware: 'auth'
+})
+
   export default {
     name: "LivePreview",
     components: {

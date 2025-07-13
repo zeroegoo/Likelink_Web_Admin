@@ -4,8 +4,8 @@
         <div class="flex mt-5 justify-between">
             <div class="flex items-center">
                 <div class="box-detail-container"></div>
-                <div class="text-2xl pl-4 sm:text-3xl font-bold">
-                    Falling Detection !!
+                <div class="text-2xl text-cyan-500 pl-4 sm:text-3xl font-bold">
+                    IN PROGRESS
                 </div>
             </div>
             <div class="flex items-center">
@@ -55,7 +55,7 @@
         </div>
 
         <!-- ปุ่มล่างสุด -->
-        <div v-if="item.task_status == 'AP'" class="flex justify-end space-x-4 mt-10  mb-6">
+        <div class="flex justify-end space-x-4 mt-10  mb-6">
             <button @click="handleAccept(item.task_id, item.user_id)"
                 class="px-6 py-2s bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none">
                 Accept
@@ -83,9 +83,9 @@ const props = defineProps({
         required: true
     }
 });
-const emit = defineEmits(['close', 'updateTask'])
+const emit = defineEmits(['close'])
 // Reactive variable initialized with the prop
-const taskItems = ref(props.item || {});
+const taskItems = ref(props.item || {});)
 
 async function handleAccept(id, user_id) {
     const user = StorageService.get('UserDetail')
@@ -95,12 +95,10 @@ async function handleAccept(id, user_id) {
             task_status: 'AS',
             user_id: `${user.user_id}`
         }
-        console.log(payload)
         const result = await fetchAPI.post(`${baseURL}Task/UpdateTask`, payload)
         if (result) {
             // showToast('❌ Marked as Fail', 'success')
             emit('updateTask', payload)
-            emit('updateTask')
             setTimeout(() => emit('close'), 100)
         }
     } catch (error) {
@@ -110,8 +108,25 @@ async function handleAccept(id, user_id) {
     }
 }
 
-async function handleDecine() {
-    setTimeout(() => emit('close'), 100)
+async function handleDecine(id, user_id) {
+    const user = StorageService.get('UserDetail')
+    try {
+        const payload = {
+            task_id: id,
+            task_status: 'CC',
+            user_id: `${user.user_id}`
+        }
+        const result = await fetchAPI.post(`${baseURL}Task/UpdateTask`, payload)
+        if (result) {
+            emit('updateTask', payload)
+            // showToast('✅ Marked as Safe', 'success')
+            setTimeout(() => emit('close'), 100)
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error)
+        setTimeout(() => emit('close'), 100)
+        // showToast('⚠️ Something went wrong', 'error')
+    }
 }
 </script>
 

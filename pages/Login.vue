@@ -41,37 +41,45 @@
   </div>
 </template>
 <script setup>
+definePageMeta({
+  middleware: 'guest'
+})
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import fetchAPI from '../../service/fetchAPI.ts';
+import { getApiBaseUrl } from '~/config/api';
+import { StorageService } from '../utility/StorageService.ts'
 
-const router = useRouter();
+const config = useRuntimeConfig()
+const router = useRouter()
+const userId = ref('')
+const password = ref('')
+const loginError = ref('')
+const fcmToken = useState('fcmToken')
+const baseURL = getApiBaseUrl()
 
-// Reactive variables
-const userId = ref('');
-const password = ref('');
-const loginError = ref('');
-
-// Handle login
-const handleLogin = async () => {
+async function handleLogin() {
+  loginError.value = ''
   try {
     const payload = {
-      user_type_id: "3",
-      username: userId.value,
+      user_type_id: "4",
+      email: userId.value,
       password: password.value,
-      fcm_token: ""
-    };
-
-    const result = await fetchAPI.post('User/Login', payload);
-    if (result) {
-      localStorage.setItem("isLoggedIn", "true");
-      router.push('/EmergencyAlert');
+      fcm_token: fcmToken.value
+    }
+    const result = await fetchAPI.post(`${baseURL}B2BUser/Login`, payload)
+    if (result && result.user) {
+      StorageService.set("UserDetail", result.user)
+      const expires = new Date(Date.now() + 86400000).toUTCString()
+      const userAutoLI = JSON.stringify(payload)
+      document.cookie = `UserAutoLI=${encodeURIComponent(userAutoLI)}; expires=${expires}; path=/`
+      window.__autoLoginDone = true
+      router.push('/')
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
-    alert(error.message)
+    loginError.value = error.message || 'Login failed'
   }
-};
+}
 </script>
 
 <style scoped>

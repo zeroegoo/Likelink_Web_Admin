@@ -2,59 +2,58 @@
     <div>
         <div v-if="personalItems">
             <div>
-                <h2 class="text-2xl sm:text-3xl font-bold">Personal Information</h2>
                 <div class="grid grid-cols-1 mt-4 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-white">
                     <!-- Name -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">Name</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{ personalItems.fullname }}
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{ personalItems.fullname }}
                         </div>
                     </div>
 
                     <!-- Age -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">AGE</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{ personalItems.height }}
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{ personalItems.height }}
                         </div>
                     </div>
 
                     <!-- Blood -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">Blood</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{ personalItems.blood }}</div>
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{ personalItems.blood }}</div>
                     </div>
 
                     <!-- Weight -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">WEIGHT</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{ personalItems.weight }}
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{ personalItems.weight }}
                         </div>
                     </div>
 
                     <!-- Height -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">HEIGHT</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{ personalItems.height }}
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{ personalItems.height }}
                         </div>
                     </div>
 
                     <!-- Address -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">ADDRESS</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{ personalItems.address }}
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{ personalItems.address }}
                         </div>
                     </div>
 
                     <!-- EMS Phone Number -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">EMS Phone Number</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{ personalItems.phone }}</div>
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{ personalItems.phone }}</div>
                     </div>
 
                     <!-- Right of Treatment -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">RIGHT OF TREATMENT</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">-</div>
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">-</div>
                     </div>
                 </div>
 
@@ -63,19 +62,21 @@
                     <!-- Past Medical Condination -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">Past Medical Condination</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">-</div>
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">-</div>
                     </div>
 
                     <!-- Medications -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">Medications</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">-</div>
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{
+                            personalItems.allergic_medication
+                        }}</div>
                     </div>
 
                     <!-- Blood -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">Allergies</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">{{
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">{{
                             personalItems.allergic_medication
                         }}</div>
                     </div>
@@ -83,7 +84,7 @@
                     <!-- Blood -->
                     <div class="flex flex-col text-black">
                         <div class="font-semibold text-black text-base">Surgical History</div>
-                        <div class="bg-[#AFE9FF] p-2 rounded-xl mt-2">-</div>
+                        <div class="bg-[#d0d0d0] p-2 rounded-xl mt-2">-</div>
                     </div>
                 </div>
             </div>

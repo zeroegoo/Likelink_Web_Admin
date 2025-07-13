@@ -1,94 +1,121 @@
 <template>
-  <div v-if="item && item.user_data" class="p-2">
-    <div class="bg-white rounded-xl shadow-md p-3 w-full h-full">
-      <div class="mb-3">
-        <h2 class="text-base font-semibold text-gray-800">Updates</h2>
-        <p class="text-sm text-gray-500">{{ item.created_timestamp }}</p>
-      </div>
+  <div v-if="item" class="bg-white shadow-md overflow-hidden rounded-3xl"
+      :class="{ 'pointer-events-none opacity-40': isDisabledStatus }">
+    <!-- Red Header (ตอนนี้อยู่ภายในกล่องสีขาว) -->
+    <div :class="[
+      'text-white justify-between items-center text-xs sm:text-sm font-bold rounded-3xl',
+       getStatusClass(item.task_status)
+    ]">
+<div class="flex p-3 justify-between">
+  <span class="flex items-center gap-2">
+    <img
+      class="h-5 w-5"
+  :src="item.task_status === 'AS' ? inProgressIcon : alertIcon"
+    >
+    {{ item.task_status === 'AS' ? 'IN PROGRESS' : 'FALL DETECTED' }}
+  </span>
+  <span class="truncate">{{ item.created_timestamp }}</span>
+</div>
 
-      <div class="flex flex-col lg:flex-row gap-3">
-        <div class="flex flex-col items-center text-center w-full lg:w-1/5">
-          <div class="w-20 h-20 rounded-full overflow-hidden mb-2">
-            <img :src="item.user_data.profile_image" alt="Profile" class="w-full h-full object-cover" />
-          </div>
-          <h3 class="font-bold text-sm">{{ item.user_data.prefix}} {{ item.user_data.fullname }}</h3>
-          <!-- <h4 class="text-sm text-gray-500">Wannatest</h4> -->
-          <p class="text-sm text-gray-500">{{ item.user_data.birthdate }}</p>
-          <p class="text-sm">1-1111-11111-1-11</p>
+      <!-- Card Body -->
+      <div class="w-full rounded-3xl p-4 flex bg-white  flex-col sm:flex-row gap-3 items-start sm:items-center">
+        <!-- Image -->
+        <!-- <div /*@click="openPopup"*/> -->
+         <div>
+          <img :src=item.video_image_link alt="Fall Incident"
+            class="w-full sm:w-20 h-auto sm:h-20 object-cover rounded-md max-h-40" />
         </div>
 
-        <div class="flex flex-col gap-2 flex-1">
-          <div class="text-sm">
-            <div class="flex ">
-              <img class="h-4 w-4 items-center text-center" src="../../assets/icons/majesticons_map-marker.png" />
-              <p class="font-semibold">Address</p>
+        <!-- Text Info -->
+        <div class="flex flex-col text-sm text-gray-800 w-full">
+          <!-- Name -->
+          <div class="flex flex-col sm:flex-row justify-between text-xs text-gray-600 mt-2 gap-3 w-full">
+            <div class="flex gap-1 w-full sm:w-1/2">
+              <img class="h-3 w-3 mt-1" src="../../assets/icons/solar_user-bold.png" alt="User Icon" />
+              <div class="font-semibold pl-1 break-words">{{ item?.user_data?.prefix }} {{ item?.user_data?.fullname }}
+              </div>
             </div>
-            <p class="bg-gray-100 p-2 rounded-xl">{{ item.user_data.address }}</p>
+
+            <div class="flex gap-1 w-full sm:w-1/2">
+              <img class="h-3 w-3 mt-1" src="../../assets/icons/Vector.png" alt="User Icon" />
+              <div class="font-semibold pl-1 break-words">{{ item?.user_data?.prefix }} {{ item?.user_data?.fullname }}
+              </div>
+            </div>
           </div>
-          <div class="text-sm">
-            <div class="flex ">
-              <img class="h-5 w-5 items-center text-center" src="../../assets/icons/healthicons_insurance-card.png" />
-              <p class="font-semibold">Insurance</p>
+
+          <!-- Address Info -->
+          <div class="flex flex-col sm:flex-row justify-between text-xs text-gray-600 mt-2 gap-3 w-full">
+            <!-- House No -->
+            <div class="flex flex-col gap-1 w-full sm:w-1/2">
+              <span>House No.</span>
+              <div class="flex items-center">
+                <img class="h-4 w-4" src="../../assets/icons/ic_round-house.png" alt="House Icon" />
+                <span class="pl-1 break-words">{{ item.house_number }}</span>
+              </div>
             </div>
-            <p class="bg-gray-100 p-2 rounded-xl">เอไอเอ (AIA)</p>
-          </div>
-          <div class="text-sm">
-            <div class="flex ">
-              <img class="h-5 w-5 items-center text-center" src="../../assets/icons/famicons_medical-sharp.png" />
-              <p class="font-semibold">Volunteer</p>
+
+            <!-- Room -->
+            <div class="flex flex-col gap-1 w-full sm:w-1/2">
+              <span>Room</span>
+              <div class="flex justify-start">
+                <img class="h-4 w-4" src="../../assets/icons/material-symbols_meeting-room-rounded.png"
+                  alt="Room Icon" />
+                <span class="pl-1 word">{{ item?.user_data?.address}}</span>
+              </div>
             </div>
-            <p class="bg-gray-100 p-2 rounded-xl">Volunteer</p>
-          </div>
-          <div class="text-sm">
-            <div class="flex ">
-              <img class="h-5 w-5 items-center text-center" src="../../assets/icons/mdi_ambulance.png" />
-              <p class="font-semibold">Unit Info</p>
-            </div>
-            <p class="bg-gray-100 p-2 rounded-xl">1669 EMS Center</p>
           </div>
         </div>
 
-        <div class="flex flex-col h-inherit justify-between gap-1 lg:w-1/3 border-l border-gray-200 pl-2">
-          <p class="text-sm text-red-500 font-semibold">Falling</p>
-          <div class="w-full h-full aspect-video rounded-xl overflow-hidden" @click="handleClickFallingDetection">
-            <img :src="item.video_image_link" class="object-cover w-full h-full" />
-          </div>
-          <div class="text-sm mt-1">
-            <p class="font-semibold">Description</p>
-            <p class="bg-gray-100 p-2 rounded-xl">ภายในห้องครัว</p>
-          </div>
-          <div class="flex gap-2 mt-2">
-            <button class="bg-green-500 text-white text-sm flex-1 py-1 rounded-full">Accept</button>
-            <button class="bg-red-500 text-white text-sm flex-1 py-1 rounded-full">Reject</button>
-          </div>
-        </div>
       </div>
     </div>
   </div>
+
 </template>
 
-
 <script setup>
+import { ref, computed  } from 'vue';
 import { useRouter } from 'vue-router'
 import { defineProps, toRefs } from 'vue'
 import { useUserStore } from '../../store/user'
+import alertIcon from '@/assets/icons/alert.png'
+import inProgressIcon from '@/assets/icons/in-progress.png'
 
 const router = useRouter()
 const userStore = useUserStore()
 
+// Define props
 const props = defineProps({
-  item: Object
-})
+  item: {
+    type: Object,
+    required: true,
+  },
+});
 
-const { item } = toRefs(props)
-
-const handleClickFallingDetection = () => {
-  if (item.value?.user_id) {
-    userStore.setUser(item.value.user_id, item.value.task_id);
-    router.push({ path: "/FallingDetection" })
+function getStatusClass(status) {
+  switch (status) {
+    case 'SS': return 'bg-green-600';
+    case 'W':  return 'bg-red-600';
+    case 'CC': return 'bg-gray-400';
+    case 'AP':
+    case 'CM': return 'bg-red-600';
+    case 'AS': return 'bg-gradient-to-r from-cyan-500 to-blue-500';
+    default:   return 'bg-white';
   }
 }
+
+const { item } = toRefs(props)
+const isDisabledStatus = computed(() => ['CC', 'SS'].includes(props.item.task_status))
+
+// const handleClickFallingDetection = () => {
+//   if (item.value?.user_id) {
+//     userStore.setUser(item.value.user_id, item.value.task_id);
+//     router.push({ path: "/FallingDetection" });
+//   }
+// }
+
 </script>
 <style scoped>
-/* Add your styles here */
+.word {
+  word-break: break-all;
+}
 </style>
